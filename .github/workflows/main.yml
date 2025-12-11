@@ -81,8 +81,8 @@ jobs:
             cd $PROJECT_DIR || exit 1
 
             # FIX: check correct file name
-            if [ ! -f docker-compose.yml ]; then
-              echo "docker-compose.yml missing!"
+            if [ ! -f docker-compose.yaml ]; then
+              echo "docker-compose.yaml missing!"
               exit 1
             fi
 
