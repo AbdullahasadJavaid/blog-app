@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - myblog-networks
+
+  backend:
+    # build: ./backend
+    image: abdullahasadjavaid/blogapp:latest
+    container_name: backend
+    restart: always
+    environment:
+      MONGO_URI: mongodb://root:example@mongo:27017/mydb?authSource=admin
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+    networks:
+      - myblog-networks
+
+  frontend:
+    # build: ./frontend
+    image: abdullahasadjavaid/blogapp:latest
+    container_name: frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - myblog-networks
+
+volumes:
+  mongo_data:
+
+networks:
+  myblog-networks:
+    driver: bridge
