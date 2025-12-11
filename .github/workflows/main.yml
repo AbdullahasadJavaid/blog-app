@@ -70,39 +70,41 @@ jobs:
 
             echo "=== Checking if project directory exists ==="
             if [ ! -d "$PROJECT_DIR" ]; then
-              echo "❌ Project folder not found. Cloning from repository..."
+              echo "Cloning project..."
               git clone $REPO_URL $PROJECT_DIR || exit 1
             else
-              echo "✅ Project folder exists. Pulling latest changes..."
+              echo "Pulling latest changes..."
               cd $PROJECT_DIR || exit 1
-              git pull || echo "⚠️ Git pull failed, continuing with existing code"
+              git pull || echo "Git pull failed – continuing"
             fi
 
-            echo "=== Checking Docker Compose File ==="
             cd $PROJECT_DIR || exit 1
-            if [ ! -f docker-compose.yaml ]; then
-              echo "❌ docker-compose.yaml missing!" 
+
+            # FIX: check correct file name
+            if [ ! -f docker-compose.yml ]; then
+              echo "docker-compose.yml missing!"
               exit 1
             fi
 
-            echo "=== Docker Versions ==="
-            docker --version
-            docker compose version
+            echo "Stopping old containers..."
+            docker compose down || true
 
-            echo "=== Pulling Latest Images ==="
-            docker compose pull || echo "⚠️ Pull failed, using local images"
+            echo "Pulling latest images from Docker Hub..."
+            docker compose pull --ignore-pull-failures
 
-            echo "=== Starting Containers ==="
-            docker compose up -d --build
+            echo "Recreating containers with latest images..."
+            docker compose up -d --force-recreate
 
-            echo "=== Running Containers ==="
+            echo "Current running containers:"
             docker ps -a
 
-            echo "=== Backend Logs ==="
-            docker logs backend --tail=30 || echo "No backend logs"
+            echo "Backend Logs:"
+            docker logs backend --tail=30 || true
 
-            echo "=== Frontend Logs ==="
-            docker logs frontend --tail=30 || echo "No frontend logs"
+            echo "Frontend Logs:"
+            docker logs frontend --tail=30 || true
 
-            echo "=== Mongo Logs ==="
-            docker logs mongo --tail=30 || echo "No mongo logs"
+            echo "Mongo Logs:"
+            docker logs mongo --tail=30 || true
+      - name: Deployment Complete
+        run: echo "✅ Deployment process finished."
