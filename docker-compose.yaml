@@ -14,8 +14,7 @@ services:
       - myblog-networks
 
   backend:
-    # build: ./backend
-    image: abdullahasadjavaid/blogapp:backend01
+    image: abdullahasadjavaid/mern-blog-app:backend0.1
     container_name: backend
     restart: always
     environment:
@@ -28,8 +27,7 @@ services:
       - myblog-networks
 
   frontend:
-    # build: ./frontend
-    image: abdullahasadjavaid/blogapp:frontend06
+    image: abdullahasadjavaid/mern-blog-app:frontend0.1
     container_name: frontend
     restart: always
     depends_on:
