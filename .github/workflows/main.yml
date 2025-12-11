@@ -65,8 +65,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_SSH_PORT }}
           script: |
-            PROJECT_DIR=~/blog-app-mern
-            REPO_URL=https://github.com/AbdullahasadJavaid/blog-app-mern.git
+            PROJECT_DIR=~/blog-app
+            REPO_URL=https://github.com/AbdullahasadJavaid/blog-app.git
 
             echo "=== Checking if project directory exists ==="
             if [ ! -d "$PROJECT_DIR" ]; then

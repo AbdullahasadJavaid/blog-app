@@ -15,7 +15,7 @@ services:
 
   backend:
     # build: ./backend
-    image: abdullahasadjavaid/blogapp:latest
+    image: abdullahasadjavaid/blogapp:backend01
     container_name: backend
     restart: always
     environment:
@@ -29,7 +29,7 @@ services:
 
   frontend:
     # build: ./frontend
-    image: abdullahasadjavaid/blogapp:latest
+    image: abdullahasadjavaid/blogapp:frontend06
     container_name: frontend
     restart: always
     depends_on:
